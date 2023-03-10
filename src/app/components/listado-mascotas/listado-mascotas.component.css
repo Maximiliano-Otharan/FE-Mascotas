@@ -1,0 +1,50 @@
+.title {
+    background-color: #666;
+    padding: 30px;
+    text-align: center;
+    color: white; 
+}
+
+table {
+    width: 100%;
+}
+
+.container {
+    margin: 0 20%;
+}
+
+td, th {
+    width: 15%;
+}
+
+.mat-form-field {
+    font-size: 14px;
+    width: 100%;
+}
+
+.delete, .edit, .search {
+    cursor: pointer;
+    transition: color 0.2s ease-in;
+}
+
+.delete{
+    color: #ff7a5f;  
+}
+
+.delete:hover {
+    color: #ff340c;
+}
+
+.edit {
+    color: #52c0ff;
+}
+
+.edit:hover {
+    color: #00a2ff;
+}
+
+.btnAgregar {
+    font-size:  10px;
+    line-height: 28px;
+}
+  
