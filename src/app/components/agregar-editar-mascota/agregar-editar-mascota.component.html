@@ -1,1 +1,49 @@
-<p>agregar-editar-mascota works!</p>
+<div class="title">
+    <h1>Agregar Mascota</h1>
+</div>
+<app-spinner *ngIf="loading"></app-spinner>
+<div class="container">
+    <mat-card class="card">
+        <mat-card-subtitle>
+            Datos de la mascota
+        </mat-card-subtitle>
+        <form [formGroup]="form" (ngSubmit)="agregarMascota()">
+            <mat-grid-list cols="3" rowHeight="80px">
+                <mat-grid-tile [colspan]="3">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Nombre</mat-label>
+                        <input formControlName="nombre" matInput autocomplete="off">
+                    </mat-form-field>
+                </mat-grid-tile>
+                <mat-grid-tile [colspan]="3">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Raza</mat-label>
+                        <input formControlName="raza" matInput autocomplete="off">
+                    </mat-form-field>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Color</mat-label>
+                        <input formControlName="color" matInput autocomplete="off">
+                    </mat-form-field>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Edad</mat-label>
+                        <input type="number" formControlName="edad" matInput autocomplete="off">
+                    </mat-form-field>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Peso</mat-label>
+                        <input type="number" formControlName="peso" matInput autocomplete="off">
+                    </mat-form-field>
+                </mat-grid-tile>
+                <mat-grid-tile [colspan]="3">
+                    <button [disabled]="form.invalid" type="submit" class="btnAceptar" mat-raised-button color="primary">Aceptar</button>
+                    <button mat-raised-button routerLink="/listadoMascotas">Volver</button>
+                </mat-grid-tile>
+              </mat-grid-list>
+        </form>
+    </mat-card>
+</div>

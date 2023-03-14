@@ -1,16 +1,5 @@
-.title {
-    background-color: #666;
-    padding: 30px;
-    text-align: center;
-    color: white; 
-}
-
 table {
     width: 100%;
-}
-
-.container {
-    margin: 0 20%;
 }
 
 td, th {
