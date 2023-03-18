@@ -4,15 +4,7 @@ import {MatTableDataSource} from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatSnackBar } from '@angular/material/snack-bar';
-
-const listMascotas: Mascota[] = [
-  {nombre: 'Chiquito', edad: 6, raza: 'Caniche', color: 'Blanco', peso: 7},
-  {nombre: 'Gordo', edad: 6, raza: 'Caniche', color: 'Blanco', peso: 10},
-  {nombre: 'Mora', edad: 6, raza: 'Caniche', color: 'Blanco', peso: 8},
-  {nombre: 'Ciro', edad: 3, raza: 'Golden', color: 'Dorado', peso: 13},
-  {nombre: 'Pelusa', edad: 16, raza: 'Caniche', color: 'Negro', peso: 5},
-  {nombre: 'Treysi', edad: 8, raza: 'Ovejera Aleman', color: 'Marron y Negri', peso: 15}
-];
+import { MascotaService } from 'src/app/services/mascota.service';
 
 @Component({
   selector: 'app-listado-mascotas',
@@ -21,20 +13,23 @@ const listMascotas: Mascota[] = [
 })
 export class ListadoMascotasComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = ['nombre', 'edad', 'raza', 'color', 'peso', 'acciones'];
-  dataSource = new MatTableDataSource<Mascota>(listMascotas);
+  dataSource = new MatTableDataSource<Mascota>();
   loading: boolean = false;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   
-  constructor(private _snackBar: MatSnackBar) { }
+  constructor(private _snackBar: MatSnackBar, private _mascotaService: MascotaService) { }
 
   ngOnInit(): void {
+    this.obtenerMascotas();
   }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
-    this.paginator._intl.itemsPerPageLabel = "Items por pagina";
+    if(this.dataSource.data.length > 0){
+      this.paginator._intl.itemsPerPageLabel = "Items por pagina";
+    }
     this.dataSource.sort = this.sort;
   }
 
@@ -43,17 +38,38 @@ export class ListadoMascotasComponent implements OnInit, AfterViewInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  eliminarMascota() {
+  obtenerMascotas() {
+    this.loading = true;
+    this._mascotaService.getMascotas().subscribe({
+      next: (data) => {
+        this.loading = false;
+        this.dataSource.data = data;
+      },
+      error: (e) => this.loading = false,
+      complete: () => console.info('complete')
+    });
+  }
+
+  eliminarMascota(id: number) {
     this.loading = true;
 
-    setTimeout(() => {
-      this.loading = false;
-      this._snackBar.open('La Mascota fue eliminada con exito', '', {
-        duration: 3000,
-        horizontalPosition: 'right',
-      });
-    }, 3000);
+    this._mascotaService.deleteMascota(id).subscribe({
+      next: () => {
+        this.mensajeExito();
+        this.loading = false;
+        this.obtenerMascotas();
+      },
+      error: (e) => this.loading = false,
+      complete: () => console.info('complete')
+    })
  
+  }
+
+  mensajeExito() {
+    this._snackBar.open('La Mascota fue eliminada con exito', '', {
+      duration: 3000,
+      horizontalPosition: 'right',
+    });
   }
 
 }
